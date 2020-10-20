@@ -1,0 +1,26 @@
+<h2>TODO</h2>
+
+  <h2>Your lists</h2>
+  <% if @lists.size == 0 %>
+    <h3>You do not have any list</h3>
+  <% end %>
+    <table>
+      <thead>
+          <th>Name of list</th>
+          <th>Number of tasks</th>
+      </thead>
+      <tbody>
+      <% @lists.each do |list_item| %>
+        <tr>
+          <td><%= list_item.title %></td>
+          <td><%= list_item.tasks.count %></td>
+          <td class="links">
+            <%= link_to 'Edit', edit_list_path(list_item) %>
+            <%= link_to 'Delete', list_path(list_item), method: :delete, data: { confirm: "Are you sure you want to delete #{list_item.title}?" } %>
+            <%= link_to 'Add task' %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <p><%= link_to 'Add a list', new_list_path %></p>

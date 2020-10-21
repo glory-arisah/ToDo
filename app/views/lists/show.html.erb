@@ -1,2 +1,15 @@
-<h1>Lists#show</h1>
-<p>Find me in app/views/lists/show.html.erb</p>
+<h3><%= @list.title %></h3>
+<% @tasks.each do |task| %>
+  <div>
+    <p>
+    <input type = 'checkbox'>
+      <span><%= task.description %></span>
+      <span class='task_links'>
+        <%= link_to 'Edit', "/lists/#{@list.id}/tasks/#{task.id}/edit" %>
+        <%= link_to 'Delete', "/lists/#{@list.id}/tasks/#{task.id}", method: :delete %>
+      </span>
+    </p>
+  </div>
+<% end %>
+
+<%= link_to 'Back to lists', root_path %>

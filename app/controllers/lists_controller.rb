@@ -1,7 +1,11 @@
 class ListsController < ApplicationController
-  
   def index
-    @lists = List.all.order('created_at DESC')
+    @lists = current_user.lists.all.order('created_at DESC')
+  end
+
+  def show
+    @list = current_user.lists.find_by(id: params[:id]) if current_user.lists.present?
+    @tasks = @list.tasks.all
   end
 
   def new
@@ -14,7 +18,7 @@ class ListsController < ApplicationController
     if @list.save
       redirect_to root_path
     else
-      render json: { notice: 'Your input is invalid' }
+      errors.add(:base, 'Your input is invalid')
       render :new
     end
   end
@@ -32,10 +36,6 @@ class ListsController < ApplicationController
       render :edit
       errors.add(:list, 'cannot be updated')
     end
-  end
-
-  def show
-    @list = current_user.lists.build
   end
 
   def destroy

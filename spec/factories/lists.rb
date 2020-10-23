@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :list do
     title { "My Things" }
-    association :user, first_name: 'Will', last_name: 'Iam'
+    association :user, name: 'Will Iam'
   end
 end

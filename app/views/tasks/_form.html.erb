@@ -1,4 +1,21 @@
-<%= simple_form_for [@list, @task] do |t| %>
-    <%= t.input :description %>
-    <%= t.button :submit %>
-<% end %>
+<p class="notice"><%= notice %></p>
+
+<div class='modal-header'>
+  <button type='button' class='close' data-dismiss='modal'>x</button>
+  
+  <div class='flash-errors'>
+    <% if flash[:errors] %>
+      <% flash[:errors].each do |alert| %>
+        <p class="alert"><%= alert %></p>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class='modal-body'>
+  <%= simple_form_for [@list, @task], remote: true do |f| %>
+    <%= f.input :description %>
+
+    <span class='modal-footer'><%= f.button :submit, class: 'btn create-list' %></span>
+  <% end %>
+</div>

@@ -7,39 +7,75 @@ describe 'Task', type: :system do
   let!(:first_list_task1) { create(:task, description: 'play ps4', list_id: first_list.id) }
   let!(:second_list_task1) { create(:task, description: 'start with the bathroom', list_id: second_list.id) }
 
-  context "logged in users" do
+  describe "logged in users" do
     before { login user }
+    context 'can perform actions with valid parameters' do
+      scenario 'can create tasks' do
+        within first(".links") do
+          click_link 'Add task'
+        end
 
-    scenario 'can create tasks' do
-      within first(".links") do
-        click_link 'Add task'
+        expect(page).to have_current_path("/lists/#{second_list.id}/tasks/new")
+        
+        fill_in 'Description', with: 'Living room'
+        
+        expect do
+          click_on 'Create Task'
+        end.to change(Task, :count).by(1)
       end
-
-      expect(page).to have_current_path("/lists/#{second_list.id}/tasks/new")
-      
-      fill_in 'Description', with: 'Living room'
-      
-      expect do
-        click_on 'Create Task'
-      end.to change(Task, :count).by(1)
-    end
 
     scenario 'can update their task' do
-      visit list_path(second_list)
-      within first(".task_links") do
-        click_link 'Edit'
+        visit list_path(second_list)
+        first(:css, ".edit-icon").click
+
+        expect(page).to have_current_path("/lists/#{second_list.id}/tasks/#{second_list_task1.id}/edit") 
+        expect(page).to have_content('start with the bathroom')
+
+        fill_in 'Description', with: 'start with the veranda'
+        click_on 'Update Task'
+        expect(page).to have_content('start with the veranda')
       end
 
-      expect(page).to have_current_path("/lists/#{second_list.id}/tasks/#{second_list_task1.id}/edit") 
-      expect(page).to have_content('start with the bathroom')
+    scenario 'can delete their task' do
+      visit list_path(second_list)
+       find(".task-links").first(".fa-trash").click
 
-      fill_in 'Description', with: 'start with the veranda'
-      click_on 'Update Task'
-      expect(page).to have_content('start with the veranda')
+       expect(page).not_to have_content(second_list_task1)
     end
 
-    scenario 'can delete tasks' do
-      
+=begin
+      scenario "can update tasks' check status", js: true do
+        visit list_path(second_list)
+  pp 'test'
+      # page.check("task_#{second_list_task1.id}", name: "task[#{second_list_task1.id}]", allow_label_click: true)
+        pp second_list_task1.task_check
+        check "task_#{second_list_task1.id}"
+        second_list_task1.reload
+        pp second_list_task1.task_check
+        expect(second_list_task1.task_check).to be(true)
+      end
+=end
+    end
+
+    context 'can not perform action with invalid parameters' do
+      scenario 'user can not create a task without inputing description' do
+        visit list_path(second_list)
+        click_on 'Add a task'
+        fill_in "Description",	with: ""
+        click_on 'Create Task'
+
+        expect(page).to have_content("Description can't be blank")
+      end
+
+      scenario 'user can not update a task without inputing description', js: true do
+        visit list_path(second_list)
+        find(".task-links").first(".fa-pencil").click
+        
+        fill_in "Description",	with: "" 
+        click_on 'Update Task'
+
+        expect(page).to have_content("Description can't be blank")
+      end
     end
   end
   

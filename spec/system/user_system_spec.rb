@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'User', type: :system do
   let!(:first_user) { create(:user, email: 'day@email.com', password: 'babadoo') }
-  let!(:second_user) { create(:user, first_name: 'Buddy', last_name: 'Hanks') }
+  let!(:second_user) { create(:user, name: 'Tom Hanks') }
 
   describe "user sign in" do
     describe "users can't sign in with invalid credentials" do
@@ -49,7 +49,7 @@ describe 'User', type: :system do
       scenario "user can't sign up with wrong email or password" do
           visit new_user_registration_path
 
-          user_name_filled_form
+          fill_in 'Name', with: 'Chicky Flair'
           fill_in "Email",	with: "gg@gmail.com"
           fill_in "Password",	with: "lll"
 
@@ -60,7 +60,7 @@ describe 'User', type: :system do
       scenario "user can't sign up with wrong email format" do
         visit new_user_registration_path
 
-        user_name_filled_form
+        fill_in 'Name', with: 'Chicky Flair'
         fill_in "Email",	with: "gg.gmail.com"
         fill_in "Password",	with: "justin"
 
@@ -71,7 +71,7 @@ describe 'User', type: :system do
       scenario "user can't sign up with existing email" do
         visit new_user_registration_path
 
-        user_name_filled_form
+        fill_in 'Name', with: 'Chicky Flair'
         fill_in "Email",	with: "day@email.com" 
         fill_in "Password",	with: "justin" 
 
@@ -84,8 +84,7 @@ describe 'User', type: :system do
       it "should submit the user's sign up form" do
         visit new_user_registration_path
 
-        fill_in 'First name', with: 'Glory'
-        fill_in 'Last name', with: 'Florish'
+        fill_in 'Name', with: 'Glory Florish'
         fill_in 'Email', with: 'jj@email.com'
         fill_in 'Password', with: 'bababoo'
 
@@ -94,10 +93,5 @@ describe 'User', type: :system do
         expect(page).to have_text('Your lists')
       end
     end
-  end
-
-  def user_name_filled_form
-    fill_in 'First name', with: 'Chicky'
-    fill_in 'Last name', with: 'Manto'
   end
 end

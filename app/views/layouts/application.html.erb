@@ -4,22 +4,33 @@
     <title>ToDo</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-
+    <input name="authenticity_token" 
+               type="hidden" 
+               value="<%= form_authenticity_token %>"/>
+    
     <% if user_signed_in? %>
-      <nav>
-        <%= link_to 'Log out', destroy_user_session_path, method: :delete %>
+      <nav class='navbar'>
+      <ul>
+        <li><h2 class='header'><%= link_to 'TODO', root_path, class: 'nav-links' %></h2></li>
+        <li><%= link_to 'Log out', destroy_user_session_path, method: :delete, class: 'nav-links navbar-brand' %></li>
+      </ul>
       </nav>
     <% end %>
 
-    <%= yield %>
+    <div class ="main">
+      <p class="notice"><%= notice %></p>
+      <p class="alert"><%= alert %></p>
+      
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -14,12 +14,14 @@ class ListsController < ApplicationController
 
   def create
     @list = current_user.lists.new(list_params)
-
+    
     if @list.save
-      redirect_to root_path
+      respond_to do |format|
+        format.html { redirect_to root_path }
+      end
     else
-      errors.add(:base, 'Your input is invalid')
-      render :new
+        flash[:errors] = @list.errors.full_messages
+        render :new
     end
   end
   
@@ -29,19 +31,19 @@ class ListsController < ApplicationController
 
   def update
     @list = current_user.lists.find_by(id: params[:id])
-
+    
     if @list.update(list_params)
       redirect_to root_path
     else
+      flash[:errors] = @list.errors.full_messages
       render :edit
-      errors.add(:list, 'cannot be updated')
     end
   end
 
   def destroy
     @list = current_user.lists.find_by(id: params[:id])
     @list.destroy
-    render :index
+    redirect_to root_path
   end
 
   private

@@ -1,3 +1,102 @@
 // Place all the styles related to the lists controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+$secondary-color: #420000;
+$primary-color: #eed8d8;
+
+.main {
+  margin: 0 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.navbar {
+  color: $primary-color;
+  background-color: $secondary-color;
+  padding: 0;
+  margin: 0;
+  ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 8px 30px;
+  }
+  .nav-links {
+    color: $primary-color;
+    font-family: 'Courgette', cursive;
+    text-decoration: none;
+  }
+  .nav-links:nth-child(2) {
+    font-size: 16px;
+  }
+  .nav-links:hover {
+    color: #d30000;
+    background-color: transparent;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+}
+
+input.btn {
+  color: $primary-color;
+  background-color: $secondary-color;
+}
+
+.btn:hover {
+  color: $secondary-color;
+  background-color: $primary-color;
+}
+
+a.list-link {
+  text-decoration: none;
+  color: #000000;
+}
+
+a.list-link:hover {
+  color: #f70e0e;
+  background-color: transparent;
+}
+
+abbr[title] {
+  display: none;
+}
+
+.modal-header .close {
+  padding: 0;
+  margin: 0;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+
+  .controller-action {
+    display: block;
+  }
+}
+
+.modal-body.edit-list {
+  display: flex;
+  flex-direction: column
+}
+
+.back-to-lists {
+  display: flex;
+}
+
+span.error {
+  display: none;
+}
+
+.flash-errors {
+  float: right;
+}

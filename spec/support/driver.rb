@@ -8,6 +8,7 @@ Capybara.register_driver :selenium_headless do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
+Capybara.default_max_wait_time = 8.seconds
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end

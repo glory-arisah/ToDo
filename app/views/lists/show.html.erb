@@ -2,23 +2,36 @@
 
   <div id="list_id" data-list-id="<%= @list.id %>">
   <% @tasks.each do |task| %>
-      <p>
-      <span>
-          <%= label_tag "task_#{task.id}", "#{task.description}", class: 'task-description' %>
+      <p class='task-holder'>
+        <span class='just-label'>
           <%= check_box_tag "task[#{task.id}]", 'yes', task.task_check, class: 'task-checked', data: { task_id: task.id }, onChange: "check_task()" %>
+          <%= label_tag "task_#{task.id}", "#{task.description}", class: 'task-description' %>
           
-          <span class='task_links'>
-            <%= link_to "/lists/#{@list.id}/tasks/#{task.id}/edit", class: 'edit-logo' do %>
-              <i class="fa fa-pencil" aria-hidden="true" style="font-size:16px;color:#0C047F"></i>
+        </span>
+
+          <span class='task-links'>
+            <%= link_to "/lists/#{@list.id}/tasks/#{task.id}", method: :delete, class: 'delete-icon' do %>
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            <% end %>
+            
+            <%= link_to "/lists/#{@list.id}/tasks/#{task.id}/edit", { remote: true, 'data-toggle': 'modal', 'data-target': '#task-modal-window', class: 'edit-icon' } do %>
+              <i class="fa fa-pencil" aria-hidden="true"></i>
             <% end %>
 
-            <%= link_to "/lists/#{@list.id}/tasks/#{task.id}", method: :delete, class: 'delete-logo' do %>
-              <i class="fa fa-trash" aria-hidden="true" style="font-size:16px;color:#0C047F"></i>
-            <% end %>
           </span>
-        </span>
+            <div id="task-modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content"></div>
+              </div>
+            </div>
       </p>
   <% end %>
   </div>
 
-<%= link_to 'Back to lists', root_path %>
+<%= link_to 'Add a task', "/lists/#{@list.id}/tasks/new", { remote: true, 'data-toggle': 'modal', 'data-target': '#task-modal-window', class: 'list-link btn btn-secondary' } %>
+<div id="task-modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+<%= link_to 'Back to lists', root_path, class: 'back-to-lists' %>

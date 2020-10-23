@@ -1,3 +1,39 @@
 // Place all the styles related to the tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+$secondary-color: #420000;
+
+.task-holder {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+
+  .task-links {
+    display:flex;
+    width: 30%;
+    justify-content: space-evenly;
+
+
+    .fa-trash, .fa-pencil {
+      -webkit-text-stroke: 0.2px black;
+      font-size: 22px;
+      padding: 0 5px;
+    }
+
+    .fa-trash {
+      border-radius: 5px;
+      -webkit-text-fill-color: #d80e0e;
+    }
+
+    .fa-pencil {
+      -webkit-text-fill-color: #1ebe26;
+    }
+  }
+}
+
+
+.task-description {
+  font-size: 19px;
+  font-family: 'Poppins', sans-serif;
+}

@@ -14,10 +14,12 @@ class TasksController < ApplicationController
     @task = @list.tasks.new(task_params)
 
     if @task.save
-      redirect_to list_path(@list)
+      respond_to do |format|
+        format.html { redirect_to list_path(@list) }
+      end
     else
+      flash[:errors] = @task.errors.full_messages
       render :new
-      errors.add(:base, 'Your input is invalid')
     end
   end
 
@@ -34,11 +36,10 @@ class TasksController < ApplicationController
     if @task.update(task_params)
       respond_to do |format|
         format.html { redirect_to list_path(@list) }
-        
       end
     else
+      flash[:errors] = @task.errors.full_messages
       render :edit
-      errors.add(:task, 'could not be updated')
     end
   end
 

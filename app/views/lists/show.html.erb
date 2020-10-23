@@ -1,15 +1,24 @@
 <h3><%= @list.title %></h3>
-<% @tasks.each do |task| %>
-  <div>
-    <p>
-    <input type = 'checkbox'>
-      <span><%= task.description %></span>
-      <span class='task_links'>
-        <%= link_to 'Edit', "/lists/#{@list.id}/tasks/#{task.id}/edit" %>
-        <%= link_to 'Delete', "/lists/#{@list.id}/tasks/#{task.id}", method: :delete %>
-      </span>
-    </p>
+
+  <div id="list_id" data-list-id="<%= @list.id %>">
+  <% @tasks.each do |task| %>
+      <p>
+      <span>
+          <%= label_tag "task_#{task.id}", "#{task.description}", class: 'task-description' %>
+          <%= check_box_tag "task[#{task.id}]", 'yes', task.task_check, class: 'task-checked', data: { task_id: task.id }, onChange: "check_task()" %>
+          
+          <span class='task_links'>
+            <%= link_to "/lists/#{@list.id}/tasks/#{task.id}/edit", class: 'edit-logo' do %>
+              <i class="fa fa-pencil" aria-hidden="true" style="font-size:16px;color:#0C047F"></i>
+            <% end %>
+
+            <%= link_to "/lists/#{@list.id}/tasks/#{task.id}", method: :delete, class: 'delete-logo' do %>
+              <i class="fa fa-trash" aria-hidden="true" style="font-size:16px;color:#0C047F"></i>
+            <% end %>
+          </span>
+        </span>
+      </p>
+  <% end %>
   </div>
-<% end %>
 
 <%= link_to 'Back to lists', root_path %>

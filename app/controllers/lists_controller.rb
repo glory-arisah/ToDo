@@ -41,7 +41,7 @@ class ListsController < ApplicationController
   def destroy
     @list = current_user.lists.find_by(id: params[:id])
     @list.destroy
-    render :index
+    redirect_to root_path
   end
 
   private

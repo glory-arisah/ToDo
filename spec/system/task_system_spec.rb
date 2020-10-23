@@ -38,8 +38,15 @@ describe 'Task', type: :system do
       expect(page).to have_content('start with the veranda')
     end
 
-    scenario 'can delete tasks' do
-      
+    scenario "can update tasks' check status", js: true do
+      visit list_path(second_list)
+pp 'test'
+    # page.check("task_#{second_list_task1.id}", name: "task[#{second_list_task1.id}]", allow_label_click: true)
+      pp second_list_task1.task_check
+      check "task_#{second_list_task1.id}"
+      second_list_task1.reload
+      pp second_list_task1.task_check
+      expect(second_list_task1.task_check).to be(true)
     end
   end
   

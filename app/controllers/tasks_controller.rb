@@ -27,19 +27,47 @@ class TasksController < ApplicationController
   end
 
   def update
+    
     @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.find_by(id: params[:id])
 
     if @task.update(task_params)
-      redirect_to list_path(@list)
+      respond_to do |format|
+        format.html { redirect_to list_path(@list) }
+        
+      end
     else
       render :edit
       errors.add(:task, 'could not be updated')
     end
   end
 
-  def destroy
+  def toggle_check
+    pp params
+    @list = current_user.lists.find_by(id: params[:list_id])
+    @task = @list.tasks.find_by(id: params[:id])
     
+    pp 'code'
+    pp @task.task_check
+    
+    respond_to do |format|
+     if @task.update(task_check: !@task.task_check)  
+      format.js { render js: @task.task_check}
+     end
+    end
+    pp @task.task_check
+  end
+  
+
+  def destroy
+    @list = current_user.lists.find_by(id: params[:list_id])
+    @task = @list.tasks.find_by(id: params[:id])
+
+    @task.destroy
+    
+    respond_to do |format|
+      format.html { redirect_to list_path(@list) }
+    end
   end
 
   private

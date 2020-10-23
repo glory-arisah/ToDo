@@ -1,3 +1,59 @@
 // Place all the styles related to the lists controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+$secondary-color: #420000;
+$primary-color: #eed8d8;
+
+.main {
+  margin: 0 30px;
+}
+
+.navbar {
+  color: $primary-color;
+  background-color: $secondary-color;
+  padding: 0;
+  margin: 0;
+  ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 8px 30px;
+  }
+  .nav-links {
+    color: $primary-color;
+    text-decoration: none;
+  }
+  .nav-links:nth-child(2) {
+    font-size: 16px;
+  }
+  .nav-links:hover {
+    color: #d30000;
+    background-color: transparent;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+}
+
+.btn {
+  color: $primary-color;
+  background-color: $secondary-color;
+}
+
+.btn:hover {
+  color: $secondary-color;
+  background-color: $primary-color;
+}
+
+a.list-link {
+  text-decoration: none;
+  color: #000000;
+}
+
+a.list-link:hover {
+  color: #f70e0e;
+  background-color: transparent;
+}

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Task', type: :system do
+describe 'Task', type: :system, js: true do
   let!(:user) { create(:user) }
   let!(:first_list) { create(:list, title: 'Gaming', user_id: user.id) }
   let!(:second_list) { create(:list, title: 'Cleaning', user_id: user.id) }
@@ -10,25 +10,36 @@ describe 'Task', type: :system do
   describe "logged in users" do
     before { login user }
     context 'can perform actions with valid parameters' do
-      scenario 'can create tasks' do
-        within first(".links") do
-          click_link 'Add task'
+      context 'create task in the root page and in the list show page'
+        scenario 'can create tasks in the root page' do
+          within first(".links") do
+            click_link 'Add task'
+          end
+
+          expect(page).to have_current_path(root_path)
+          
+          fill_in 'Description', with: 'Living room'
+          click_on 'Create Task'
         end
 
-        expect(page).to have_current_path("/lists/#{second_list.id}/tasks/new")
-        
-        fill_in 'Description', with: 'Living room'
-        
-        expect do
-          click_on 'Create Task'
-        end.to change(Task, :count).by(1)
-      end
+        scenario 'can create tasks in the list show page' do
+          visit list_path(second_list)
 
-    scenario 'can update their task' do
+            click_link 'Add a task'
+
+          expect(page).to have_content('Description')
+
+          fill_in 'Description', with: 'do something'
+            click_on 'Create Task'
+
+          expect(page).to have_content('do something')
+        end
+
+      scenario 'can update their task' do
         visit list_path(second_list)
         first(:css, ".edit-icon").click
 
-        expect(page).to have_current_path("/lists/#{second_list.id}/tasks/#{second_list_task1.id}/edit") 
+        expect(page).to have_current_path("/lists/#{second_list.id}") 
         expect(page).to have_content('start with the bathroom')
 
         fill_in 'Description', with: 'start with the veranda'
@@ -42,6 +53,7 @@ describe 'Task', type: :system do
 
        expect(page).not_to have_content(second_list_task1)
     end
+  end
 
 =begin
       scenario "can update tasks' check status", js: true do
@@ -55,7 +67,6 @@ describe 'Task', type: :system do
         expect(second_list_task1.task_check).to be(true)
       end
 =end
-    end
 
     context 'can not perform action with invalid parameters' do
       scenario 'user can not create a task without inputing description' do
@@ -67,7 +78,7 @@ describe 'Task', type: :system do
         expect(page).to have_content("Description can't be blank")
       end
 
-      scenario 'user can not update a task without inputing description', js: true do
+      scenario 'user can not update a task without inputing description' do
         visit list_path(second_list)
         find(".task-links").first(".fa-pencil").click
         

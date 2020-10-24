@@ -7,6 +7,10 @@ class TasksController < ApplicationController
   def new
     @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.new
+
+    respond_to do |format|
+      format.js {  }
+    end
   end
 
   def create
@@ -26,10 +30,13 @@ class TasksController < ApplicationController
   def edit
     @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.find_by(id: params[:id])
+
+    respond_to do |format|
+      format.js {  }
+    end
   end
 
-  def update
-    
+  def update    
     @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.find_by(id: params[:id])
 

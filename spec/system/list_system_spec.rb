@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'List', type: :system do
+describe 'List', type: :system, js: true do
   let!(:user) { create(:user, name: 'Rebecca Friday') }
   let!(:first_list) { create(:list, title: 'Basket ball', user_id: user.id) }
   let!(:second_list) { create(:list, title: 'Golf', user_id: user.id) }
@@ -24,7 +24,7 @@ describe 'List', type: :system do
           click_link "Edit"
         end
 
-        expect(page).to have_current_path("/lists/#{second_list.id}/edit")
+        expect(page).to have_current_path(root_path)
 
         fill_in 'Title', with: 'Clean house'
 

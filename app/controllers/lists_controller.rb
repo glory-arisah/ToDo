@@ -10,6 +10,10 @@ class ListsController < ApplicationController
 
   def new
     @list = current_user.lists.new
+
+    respond_to do |format|
+      format.js { }
+    end
   end
 
   def create
@@ -27,6 +31,10 @@ class ListsController < ApplicationController
   
   def edit
     @list = current_user.lists.find_by(id: params[:id])
+
+    respond_to do |format|
+      format.js { }
+    end
   end
 
   def update

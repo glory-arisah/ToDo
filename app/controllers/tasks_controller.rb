@@ -1,13 +1,12 @@
 class TasksController < ApplicationController
+  before_action :find_list
   before_action :find_task, only: [:update, :edit, :toggle_check, :destroy]
 
   def index
-    @lists = current_user.lists.find_by(id: params[:list_id])
     @tasks = @lists.tasks
   end
 
   def new
-    @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.new
 
     respond_to do |format|
@@ -63,8 +62,12 @@ class TasksController < ApplicationController
     params.require(:task).permit(:description)
   end
 
-  def find_task
+  def find_list
     @list = current_user.lists.find_by(id: params[:list_id])
+  end
+
+  def find_task
     @task = @list.tasks.find_by(id: params[:id])
   end
+  
 end

@@ -4,7 +4,7 @@
   <div class='flash-errors'>
     <% if flash[:errors] %>
       <% flash[:errors].each do |alert| %>
-        <p class="alert"><%= alert %></p>
+        <p class='alert'><%= alert %></p>
       <% end %>
     <% end %>
   </div>
@@ -12,8 +12,8 @@
 </div>
 
 <div class='modal-body'>
-  <%= simple_form_for @list, remote: true, class: 'list-form' do |f| %>
-    <%= f.input :title %>
+  <%= simple_form_for @list, remote: true, class: 'list-form form-group' do |f| %>
+    <%= f.input :title, label_html: { class: 'form-control-file' } %>
     
   <span class='modal-footer'><%= f.button :submit, class: 'btn create-list' %></span>
   <% end %>

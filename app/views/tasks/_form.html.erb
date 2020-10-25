@@ -13,9 +13,9 @@
 </div>
 
 <div class='modal-body'>
-  <%= simple_form_for [@list, @task], remote: true, class: 'list-form form-group' do |f| %>
-    <%= f.input :description, label_html: { class: 'form-control-file' } %>
+  <%= simple_form_for [@list, @task], remote: true, class: "form-group" do |f| %>
+    <%= f.input :description, label_html: { class: "form-control-file" } %>
 
-    <span class='modal-footer'><%= f.button :submit, class: 'btn create-list' %></span>
+    <span class='modal-footer'><%= f.button :submit, class: "btn create-list" %></span>
   <% end %>
 </div>

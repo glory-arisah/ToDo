@@ -40,6 +40,10 @@ $primary-color: #c4c2e0;
   margin: 0 30px;
   font-family: 'Poppins', sans-serif;
 
+.alert {
+  padding: 0;
+}
+
 .table {
   margin-top: 35px;
 .thead {
@@ -47,12 +51,6 @@ $primary-color: #c4c2e0;
   background-color: $secondary-color;
   th {
     color: $primary-color !important;
-  }
-}
-
-tbody {
-  td {
-    text-align: center;
   }
 }
 }

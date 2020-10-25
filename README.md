@@ -58,4 +58,6 @@
 <li>Error handling</li>
 
 <li>Progress bar for tasks done</li>
+
+<li>To create a loader for submitted forms</li>
 </ol>

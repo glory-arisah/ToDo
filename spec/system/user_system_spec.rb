@@ -5,6 +5,17 @@ describe 'User', type: :system do
   let!(:second_user) { create(:user, name: 'Tom Hanks') }
 
   describe "user sign in" do
+    describe 'user can sign in with valid credentials' do
+      scenario 'user can sign in correctly' do
+        visit new_user_session_path
+        
+        fill_in 'Email', with: 'day@email.com'
+        fill_in 'Password', with: 'babadoo'
+        click_on 'Log in'
+        expect(page).to have_text('Your lists')
+      end
+    end
+
     describe "users can't sign in with invalid credentials" do
       scenario 'user can not log in with empty fields' do
         visit root_path
@@ -27,21 +38,7 @@ describe 'User', type: :system do
         click_on 'Log in'
         expect(page).to have_text('Invalid Email or password')
       end
-    end
-
-    describe 'user can sign in with valid credentials' do
-      scenario 'user can sign in correctly' do
-        visit new_user_session_path
-        
-        fill_in 'Email', with: 'day@email.com'
-        fill_in 'Password', with: 'babadoo'
-
-        click_on 'Log in'
-
-        expect(page).to have_text('Your lists')
-      end
-    end
-    
+    end    
   end
 
   describe "user sign up" do

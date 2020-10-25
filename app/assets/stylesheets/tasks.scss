@@ -8,30 +8,31 @@ $secondary-color: #420000;
   flex-direction: row;
   justify-content: space-between;
 
+  .just-label input:checked + label {
+    text-decoration: line-through;
+  }
 
   .task-links {
     display:flex;
     width: 30%;
     justify-content: space-evenly;
 
-
     .fa-trash, .fa-pencil {
       -webkit-text-stroke: 0.2px black;
-      font-size: 22px;
-      padding: 0 5px;
+      font-size: 26px;
+      padding: 2px 43px;
+    }
+
+    .fa-pencil {
+      -webkit-text-fill-color: #1ebe26;
     }
 
     .fa-trash {
       border-radius: 5px;
       -webkit-text-fill-color: #d80e0e;
     }
-
-    .fa-pencil {
-      -webkit-text-fill-color: #1ebe26;
-    }
   }
 }
-
 
 .task-description {
   font-size: 19px;

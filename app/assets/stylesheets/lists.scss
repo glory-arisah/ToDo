@@ -40,9 +40,9 @@ $primary-color: #eed8d8;
   }
 }
 
-input.btn {
-  color: $primary-color;
-  background-color: $secondary-color;
+input.btn, .btn {
+  color: $primary-color !important;
+  background-color: $secondary-color !important;
 }
 
 .btn:hover {

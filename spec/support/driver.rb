@@ -1,4 +1,4 @@
-Capybara.register_driver :selenium_headless do |app|
+Capybara.register_driver :chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
@@ -8,7 +8,7 @@ Capybara.register_driver :selenium_headless do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
-Capybara.default_max_wait_time = 8.seconds
+Capybara.default_max_wait_time = 5.seconds
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
@@ -19,6 +19,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium_headless
+    driven_by :chromz_headless
   end
 end

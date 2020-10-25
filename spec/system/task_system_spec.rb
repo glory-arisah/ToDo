@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 describe 'Task', type: :system, js: true do
-  let!(:user) { create(:user) }
-  let!(:first_list) { create(:list, title: 'Gaming', user_id: user.id) }
-  let!(:second_list) { create(:list, title: 'Cleaning', user_id: user.id) }
-  let!(:first_list_task1) { create(:task, description: 'play ps4', list_id: first_list.id) }
-  let!(:second_list_task1) { create(:task, description: 'start with the bathroom', list_id: second_list.id) }
+  let(:user) { create(:user) }
+  let(:house_cleaning) { create(:list, title: 'environmental', user: user) }
+  let(:break_time) { create(:list, title: 'sleep', user_id: user.id) }
+  let!(:house_cleaning_task) { create(:task, description: 'wash the toilet', list_id: house_cleaning.id) }
+  let!(:gaming_break_time_task) { create(:task, description: 'play games', list_id: break_time.id) }
+  let!(:yoga_break_time_task) { create(:task, description: 'do some yoga', list_id: break_time.id) }
 
   describe "logged in users" do
     before { login user }
@@ -15,32 +16,27 @@ describe 'Task', type: :system, js: true do
           within first(".links") do
             click_link 'Add task'
           end
-
           expect(page).to have_current_path(root_path)
-          
           fill_in 'Description', with: 'Living room'
           click_on 'Create Task'
+
+          expect(page).to have_content('Living room')
         end
 
         scenario 'can create tasks in the list show page' do
-          visit list_path(second_list)
+          visit list_path(break_time)
+          click_link 'Add a task'
+          fill_in 'Description', with: 'do stretches'
+          click_on 'Create Task'
 
-            click_link 'Add a task'
-
-          expect(page).to have_content('Description')
-
-          fill_in 'Description', with: 'do something'
-            click_on 'Create Task'
-
-          expect(page).to have_content('do something')
+          expect(page).to have_content('do stretches')
         end
 
       scenario 'can update their task' do
-        visit list_path(second_list)
+        visit list_path(break_time)        
         first(:css, ".edit-icon").click
-
-        expect(page).to have_current_path("/lists/#{second_list.id}") 
-        expect(page).to have_content('start with the bathroom')
+        expect(page).to have_current_path("/lists/#{break_time.id}") 
+        expect(page).to have_content('play games')
 
         fill_in 'Description', with: 'start with the veranda'
         click_on 'Update Task'
@@ -48,29 +44,23 @@ describe 'Task', type: :system, js: true do
       end
 
     scenario 'can delete their task' do
-      visit list_path(second_list)
-       find(".task-links").first(".fa-trash").click
-
-       expect(page).not_to have_content(second_list_task1)
+      visit list_path(break_time)
+      first(:css, ".delete-icon").click
+      expect(page).not_to have_content(gaming_break_time_task)
+    end
+  
+    scenario "can update tasks' check status" do
+      visit list_path(break_time)
+      expect do
+        check("task_id_#{gaming_break_time_task.id}")
+        wait_for_ajax
+      end.to change { gaming_break_time_task.reload.task_check }.from(false).to(true)
     end
   end
 
-=begin
-      scenario "can update tasks' check status", js: true do
-        visit list_path(second_list)
-  pp 'test'
-      # page.check("task_#{second_list_task1.id}", name: "task[#{second_list_task1.id}]", allow_label_click: true)
-        pp second_list_task1.task_check
-        check "task_#{second_list_task1.id}"
-        second_list_task1.reload
-        pp second_list_task1.task_check
-        expect(second_list_task1.task_check).to be(true)
-      end
-=end
-
     context 'can not perform action with invalid parameters' do
       scenario 'user can not create a task without inputing description' do
-        visit list_path(second_list)
+        visit list_path(break_time)
         click_on 'Add a task'
         fill_in "Description",	with: ""
         click_on 'Create Task'
@@ -79,8 +69,8 @@ describe 'Task', type: :system, js: true do
       end
 
       scenario 'user can not update a task without inputing description' do
-        visit list_path(second_list)
-        find(".task-links").first(".fa-pencil").click
+        visit list_path(break_time)
+        first(:css, ".edit-icon").click
         
         fill_in "Description",	with: "" 
         click_on 'Update Task'
@@ -92,18 +82,17 @@ describe 'Task', type: :system, js: true do
   
   context "non-logged in users" do
     scenario 'can not create tasks' do
-      visit "/lists/#{first_list.id}/tasks/new"
+      visit "/lists/#{house_cleaning.id}/tasks/new"
 
       expect(page).to have_content('Email')
       expect(page).to have_content('Password')
     end
 
     scenario 'can not update their tasks' do
-      visit "/lists/#{first_list.id}/tasks/#{first_list_task1.id}/edit"
+      visit "/lists/#{house_cleaning.id}/tasks/#{house_cleaning_task.id}/edit"
 
       expect(page).to have_content('Email')
       expect(page).to have_content('Password')
     end
-
   end
 end

@@ -1,2 +1,4 @@
 $('#task-modal-window').find('.modal-content').html("<%= j (render 'tasks/form') %>")
 $('#task-modal-window').modal()
+
+$('.modal-header').append("<h3>Add a task to <%= @list.title %></h3>")

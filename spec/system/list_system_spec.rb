@@ -1,99 +1,103 @@
-require 'rails_helper'
+require "rails_helper"
 
-describe 'List', type: :system do
-  let!(:user) { create(:user, name: 'Rebecca Friday') }
-  let!(:first_list) { create(:list, title: 'Basket ball', user_id: user.id) }
-  let!(:second_list) { create(:list, title: 'Golf', user_id: user.id) }
-  let!(:first_list_task) { create(:task, description: 'get the basket ball', list_id: first_list.id) }
-  let!(:second_list_task) { create(:task, description: 'get the golf ball', list_id: second_list.id) }
+describe "List", type: :system, js: true do
+  let(:user) { create(:user) }
+  let(:house_cleaning) { create(:list, title: "environmental", user: user) }
+  let(:break_time) { create(:list, title: "sleep", user: user) }
+  let!(:house_cleaning_task) { create(:task, description: "wash the toilet", list_id: house_cleaning.id) }
+  let!(:gaming_break_time_task) { create(:task, description: "play games", list_id: break_time.id) }
+  let!(:yoga_break_time_task) { create(:task, description: "do some yoga", list_id: break_time.id) }
 
   describe "logged in users" do
     before { login user }
-    context 'can perform actions with valid parameters' do
-      scenario 'user can add their lists to the list table' do
-        expect(page).to have_content('Basket ball')
+    context "can perform actions with valid parameters" do
+      scenario "user can add their lists to the list table" do
+        click_on "Add a list"
 
-        click_on 'Add a list'
-        fill_in 'Title', with: 'Football'
-        click_on 'Create List'
-        expect(page).to have_content('Football')
+        fill_in "Title", with: "Football"
+        click_on "Create List"
+        expect(page).to have_content("Football")
       end
 
-      scenario 'user can update the list' do
+      scenario "user can update the list" do
         within first(".links") do
           click_link "Edit"
         end
 
-        expect(page).to have_current_path("/lists/#{second_list.id}/edit")
+        expect(page).to have_current_path(root_path)
 
-        fill_in 'Title', with: 'Clean house'
+        fill_in "Title", with: "Clean house"
 
-        click_on 'Update List'
+        click_on "Update List"
 
-        expect(page).not_to have_content('Golf')
-        expect(page).to have_content('Clean house')
+        expect(page).not_to have_content("play games")
+        expect(page).to have_content("Clean house")
       end
 
-      context 'user can add tasks to their list' do
-        scenario 'in the index page' do
+      context "user can add tasks to their list" do
+        scenario "in the index page" do
           within first(".links") do
-            click_link 'Add task'
+            click_link "Add task"
           end
-          
-          fill_in 'Description', with: 'Cook'
-          click_on 'Create Task'
 
-          expect(page).to have_current_path("/lists/#{second_list.id}")
+          fill_in "Description", with: "Cook"
+          click_on "Create Task"
+
+          expect(page).to have_current_path("/lists/#{break_time.id}")
         end
 
-        scenario 'in the show page' do
-          visit list_path(second_list)
+        scenario "in the show page" do
+          visit list_path(break_time)
 
-          click_on 'Add a task'
-          fill_in 'Description', with: 'Cook'
-          click_on 'Create Task'
+          click_on "Add a task"
+          fill_in "Description", with: "Cook"
+          click_on "Create Task"
 
-          expect(page).to have_current_path("/lists/#{second_list.id}")
+          expect(page).to have_current_path("/lists/#{break_time.id}")
+          expect(page).to have_content('Cook')
         end
       end
 
-      scenario 'user can view the tasks in their list' do
+      scenario "user can view the tasks in their list" do
         within first(".links") do
-          click_link 'Show'
+          click_link "Show"
         end
 
-        expect(page).to have_current_path("/lists/#{second_list.id}")
-        expect(page).to have_content('Add a task')
-        expect(page).to have_content('Back to lists')
-        expect(page).to have_content('Golf')
-        expect(page).to have_content('get the golf ball')
+        expect(page).to have_current_path("/lists/#{break_time.id}")
+        expect(page).to have_content("sleep")
+        expect(page).to have_content("play games")
+        expect(page).to have_content("do some yoga")
+        expect(page).to have_content("Add a task")
+        expect(page).to have_content("Back to lists")
       end
 
-      scenario 'user can delete list' do
+      scenario "user can delete list" do
         within first(".links") do
-          click_link 'Delete'
+          click_link "Delete"
         end
-
-        expect(page).not_to have_content(second_list.title)
+        click_on "Delete"
+        expect(page).not_to have_content('sleep')
+        expect(page).not_to have_content('environmental')
+        expect(page).to have_content('You do not have any list')
       end
     end
 
-    context 'can not perform action with invalid parameters' do
-      scenario 'user can not add a list without inputing title name' do
-        click_on 'Add a list'
-        fill_in 'Title', with: ''
-        click_on 'Create List'
+    context "can not perform action with invalid parameters" do
+      scenario "user can not add a list without inputing title name" do
+        click_on "Add a list"
+        fill_in "Title", with: ""
+        click_on "Create List"
 
         expect(page).to have_content("Title can't be blank")
       end
 
-      scenario 'user can not update a list without inputing a title' do
+      scenario "user can not update a list without inputing a title" do
         within first(".links") do
-          click_link 'Edit'
+          click_link "Edit"
         end
-        
-        fill_in 'Title', with: ''
-        click_on 'Update List'
+
+        fill_in "Title", with: ""
+        click_on "Update List"
 
         expect(page).to have_content("Title can't be blank")
       end
@@ -101,27 +105,27 @@ describe 'List', type: :system do
   end
 
   context "non-logged in users" do
-    scenario 'can not add their lists to the list table' do
+    scenario "can not add their lists to the list table" do
       visit root_path
 
-      expect(page).to have_current_path('/users/sign_in')
-      expect(page).to have_content('Email')
-      expect(page).to have_content('Password')
+      expect(page).to have_current_path("/users/sign_in")
+      expect(page).to have_content("Email")
+      expect(page).to have_content("Password")
     end
 
-    scenario 'can not update their lists' do
-      visit edit_list_path(second_list)
-     
-      expect(page).to have_current_path('/users/sign_in')
-      expect(page).to have_content('Email')
-      expect(page).to have_content('Password')
+    scenario "can not update their lists" do
+      visit edit_list_path(break_time)
+
+      expect(page).to have_current_path("/users/sign_in")
+      expect(page).to have_content("Email")
+      expect(page).to have_content("Password")
     end
 
-    scenario 'can not view the tasks in their list' do
-      visit list_path(second_list)
+    scenario "can not view the tasks in their list" do
+      visit list_path(break_time)
 
-      expect(page).to have_content('Email')
-      expect(page).to have_content('Password')
+      expect(page).to have_content("Email")
+      expect(page).to have_content("Password")
     end
   end
 end

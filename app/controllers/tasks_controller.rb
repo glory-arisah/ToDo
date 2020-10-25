@@ -1,16 +1,22 @@
 class TasksController < ApplicationController
+  before_action :find_task, only: [:update, :edit, :toggle_check, :destroy]
+
   def index
     @lists = current_user.lists.find_by(id: params[:list_id])
-    @tasks = @lists.tasks.order('created at DESC')
+    @tasks = @lists.tasks
   end
-  
+
   def new
     @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.new
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def create
-    @list = List.find_by(id: params[:list_id])
+    @list = current_user.lists.find_by(id: params[:list_id])
     @task = @list.tasks.new(task_params)
 
     if @task.save
@@ -24,15 +30,12 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @list = current_user.lists.find_by(id: params[:list_id])
-    @task = @list.tasks.find_by(id: params[:id])
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
-    
-    @list = current_user.lists.find_by(id: params[:list_id])
-    @task = @list.tasks.find_by(id: params[:id])
-
     if @task.update(task_params)
       respond_to do |format|
         format.html { redirect_to list_path(@list) }
@@ -44,36 +47,24 @@ class TasksController < ApplicationController
   end
 
   def toggle_check
-    pp params
-    @list = current_user.lists.find_by(id: params[:list_id])
-    @task = @list.tasks.find_by(id: params[:id])
-    
-    pp 'code'
-    pp @task.task_check
-    
-    respond_to do |format|
-     if @task.update(task_check: !@task.task_check)  
-      format.js { render js: @task.task_check}
-     end
-    end
-    pp @task.task_check
+    @task.update(task_check: !@task.task_check) if @task
   end
-  
 
   def destroy
-    @list = current_user.lists.find_by(id: params[:list_id])
-    @task = @list.tasks.find_by(id: params[:id])
-
     @task.destroy
-    
     respond_to do |format|
       format.html { redirect_to list_path(@list) }
     end
   end
 
   private
-  
+
   def task_params
     params.require(:task).permit(:description)
+  end
+
+  def find_task
+    @list = current_user.lists.find_by(id: params[:list_id])
+    @task = @list.tasks.find_by(id: params[:id])
   end
 end

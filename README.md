@@ -56,4 +56,6 @@
 <li>User Authorization</li>
 
 <li>Error handling</li>
+
+<li>Progress bar for tasks done</li>
 </ol>

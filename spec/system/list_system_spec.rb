@@ -4,13 +4,36 @@ describe "List", type: :system, js: true do
   let(:user) { create(:user) }
   let(:house_cleaning) { create(:list, title: "environmental", user: user) }
   let(:break_time) { create(:list, title: "sleep", user: user) }
-  let!(:house_cleaning_task) { create(:task, description: "wash the toilet", list_id: house_cleaning.id) }
-  let!(:gaming_break_time_task) { create(:task, description: "play games", list_id: break_time.id) }
-  let!(:yoga_break_time_task) { create(:task, description: "do some yoga", list_id: break_time.id) }
+  let!(:flex) { create(:list, title: 'flexing', user: user) }
+  let!(:house_cleaning_task) { create(:task, description: "wash the toilet", list: house_cleaning) }
+  let!(:gaming_break_time_task) { create(:task, description: "play games", list: break_time) }
+  let!(:yoga_break_time_task) { create(:task, description: "do some yoga", list: break_time, task_check: true) }
+  let!(:music_break_time_task) { create(:task, description: "listen to music", list: break_time, task_check: true) }
 
   describe "logged in users" do
     before { login user }
+
     context "can perform actions with valid parameters" do
+      scenario 'users can view their lists' do
+        within ".list-#{house_cleaning.id}" do
+          expect(page).to have_content("environmental")
+          expect(page).to have_content('1')
+          expect(page).to have_content('0%')
+        end
+
+        within ".list-#{break_time.id}" do
+          expect(page).to have_content("sleep")
+          expect(page).to have_content('3')
+          expect(page).to have_content('66.67%')
+        end
+
+        within ".list-#{flex.id}" do
+          expect(page).to have_content("flexing")
+          expect(page).to have_content('0')
+          expect(page).to have_content('0%')
+        end
+      end
+
       scenario "user can add their lists to the list table" do
         click_on "Add a list"
 
@@ -72,13 +95,11 @@ describe "List", type: :system, js: true do
       end
 
       scenario "user can delete list" do
-        within first(".links") do
-          click_link "Delete"
+        within ".list-#{house_cleaning.id}" do
+          click_on 'Delete'
         end
-        click_on "Delete"
-        expect(page).not_to have_content('sleep')
+        
         expect(page).not_to have_content('environmental')
-        expect(page).to have_content('You do not have any list')
       end
     end
 

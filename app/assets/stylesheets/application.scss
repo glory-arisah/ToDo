@@ -15,8 +15,7 @@
  *= require_self
  */
 
- @import "bootstrap/scss/bootstrap"
-
- 
-
-  
+ @import "bootstrap/scss/bootstrap";
+ @import "./users";
+ @import "./lists";
+ @import "./tasks";

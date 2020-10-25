@@ -1,4 +1,4 @@
-<p class="notice"><%= notice %></p>
+<p class='notice'><%= notice %></p>
 
 <div class='modal-header'>
   <button type='button' class='close' data-dismiss='modal'>x</button>
@@ -6,15 +6,15 @@
   <div class='flash-errors'>
     <% if flash[:errors] %>
       <% flash[:errors].each do |alert| %>
-        <p class="alert"><%= alert %></p>
+        <p class='alert'><%= alert %></p>
       <% end %>
     <% end %>
   </div>
 </div>
 
 <div class='modal-body'>
-  <%= simple_form_for [@list, @task], remote: true do |f| %>
-    <%= f.input :description %>
+  <%= simple_form_for [@list, @task], remote: true, class: 'list-form form-group' do |f| %>
+    <%= f.input :description, label_html: { class: 'form-control-file' } %>
 
     <span class='modal-footer'><%= f.button :submit, class: 'btn create-list' %></span>
   <% end %>

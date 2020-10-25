@@ -13,7 +13,7 @@ class ListsController < ApplicationController
     @list = current_user.lists.new
 
     respond_to do |format|
-      format.js { }
+      format.js
     end
   end
 
@@ -32,7 +32,7 @@ class ListsController < ApplicationController
 
   def edit
     respond_to do |format|
-      format.js { }
+      format.js
     end
   end
 

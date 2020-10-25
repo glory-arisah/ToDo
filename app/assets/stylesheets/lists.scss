@@ -2,13 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-$secondary-color: #420000;
-$primary-color: #eed8d8;
 
-.main {
-  margin: 0 30px;
-  font-family: 'Poppins', sans-serif;
-}
+$secondary-color: #100c42;
+$primary-color: #c4c2e0;
 
 .navbar {
   color: $primary-color;
@@ -32,7 +28,7 @@ $primary-color: #eed8d8;
     font-size: 16px;
   }
   .nav-links:hover {
-    color: #d30000;
+    color: #dae3ff;
     background-color: transparent;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -40,14 +36,38 @@ $primary-color: #eed8d8;
   }
 }
 
+.main {
+  margin: 0 30px;
+  font-family: 'Poppins', sans-serif;
+
+.table {
+  margin-top: 35px;
+.thead {
+  text-align: center;
+  background-color: $secondary-color;
+  th {
+    color: $primary-color !important;
+  }
+}
+
+tbody {
+  td {
+    text-align: center;
+  }
+}
+}
+
 input.btn, .btn {
   color: $primary-color !important;
   background-color: $secondary-color !important;
+  border-radius: 25px;
+  font-size: 16px;
 }
 
 .btn:hover {
-  color: $secondary-color;
-  background-color: $primary-color;
+  color: $secondary-color !important;
+  background-color: $primary-color !important;
+  border-radius: 25px;
 }
 
 a.list-link {
@@ -84,19 +104,21 @@ abbr[title] {
   }
 }
 
-.modal-body.edit-list {
-  display: flex;
-  flex-direction: column
-}
+  .modal-body.edit-list {
+    display: flex;
+    flex-direction: column
+  }
 
-.back-to-lists {
-  display: flex;
-}
+  .back-to-lists {
+    margin-top: 10px;
+    display: flex;
+  }
 
-span.error {
-  display: none;
-}
+  span.error {
+    display: none;
+  }
 
-.flash-errors {
-  float: right;
+  .flash-errors {
+    float: right;
+  } 
 }

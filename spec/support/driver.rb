@@ -19,6 +19,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :system, js: true) do
-    driven_by :chromz_headless
+    driven_by :chrome_headless
   end
 end

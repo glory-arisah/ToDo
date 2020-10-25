@@ -3,24 +3,25 @@
   <% if @lists.blank? %>
     <h5>You do not have any list</h5>
   <% else %>
-    <table class='table table-strip'>
-      <thead>
-          <th>Name of list</th>
+    <table class='table table-striped'>
+      <thead class='thead'>
+          <th>List name</th>
           <th>Number of tasks</th>
+          <th>Actions</th>
       </thead>
       <tbody>
       <% @lists.each do |list_item| %>
         <tr>
           <td><%= list_item.title %></td>
           <td><%= list_item.tasks.count %></td>
-          <td class="links">
+          <td class='links'>
             <%= link_to 'Show', list_path(list_item), class: 'list-link' %> |
             <%= link_to 'Edit', edit_list_path(list_item), { remote: true, 'data-toggle': 'modal', 'data-target': '#modal-window', class: 'list-link' } %> | 
             <%= link_to 'Delete', list_path(list_item), method: :delete, class: 'list-link' %> | 
             <%= link_to 'Add task', "/lists/#{list_item.id}/tasks/new", { remote: true, 'data-toggle': 'modal', 'data-target': '#task-modal-window', class: 'list-link' } %>
-            <div id="task-modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content"></div>
+            <div id='task-modal-window' class='modal hide fade' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+              <div class='modal-dialog' role='document'>
+                <div class='modal-content'></div>
               </div>
             </div>
           </td>
@@ -31,8 +32,8 @@
   <% end %>
 
 <p><%= link_to 'Add a list', new_list_path, { remote: true, 'data-toggle': 'modal', 'data-target': '#modal-window', class: 'btn btn-lg' } %></p>
-<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content"></div>
+<div id='modal-window' class='modal hide fade' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'></div>
   </div>
 </div>

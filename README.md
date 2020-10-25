@@ -8,7 +8,7 @@
 
 <p>This app is used to keep track of your to do activities. It gives you the opportunity to group your to-do tasks into lists</p>
 
-<p>LIVE LINK : <a href="https://todo-lists-tasks-app.herokuapp.com/" style="font-weight:bold;">https://todo-lists-tasks-appherokuapp.com</a></p>
+<p>LIVE LINK : <a href="https://todo-lists-tasks-app.herokuapp.com/" style="font-weight:bold;">https://todo-lists-tasks-app.herokuapp.com</a></p>
 
 <h3>Features</h3>
 <hr>
